@@ -285,17 +285,19 @@ INSERT INTO {table} (field_text, field_int4) VALUES ('HELLO', 8)");
             StateAssertions(conn);
 
             Assert.That(reader.StartRow(), Is.EqualTo(2));
+            Assert.That(reader.IsNull, Is.False);
             Assert.That(reader.Read<string>(), Is.EqualTo("Hello"));
+            Assert.That(reader.IsNull, Is.False);
             Assert.That(reader.Read<int>(NpgsqlDbType.Smallint), Is.EqualTo(8));
 
             Assert.That(reader.StartRow(), Is.EqualTo(2));
             Assert.That(reader.IsNull, Is.False);
             Assert.That(reader.Read<string>(), Is.EqualTo("Something"));
-            reader.Skip();
+            Assert.That(reader.IsNull, Is.False);
+            Assert.That(reader.Read<int>(NpgsqlDbType.Smallint), Is.EqualTo(9));
 
             Assert.That(reader.StartRow(), Is.EqualTo(2));
             Assert.That(reader.Read<string>(), Is.EqualTo(longString));
-            Assert.That(reader.IsNull, Is.True);
             Assert.That(reader.IsNull, Is.True);
             reader.Skip();
 
